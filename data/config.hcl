@@ -8,8 +8,8 @@ listener "tcp" {
 listener "tcp" {
     address = "0.0.0.0:8200"
     tls_disable = 0
-    tls_cert_file = "/run/secrets/vault_cert"
-    tls_key_file = "/run/secrets/vault_key"
+    tls_cert_file = "/run/secrets/cert_bundle"
+    tls_key_file = "/run/secrets/key"
     tls_client_ca_file = "/run/secrets/ca"
 }
 disable_mlock = true
