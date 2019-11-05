@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # Most of this file comes from https://medium.com/@basi/docker-environment-variables-expanded-from-secrets-8fa70617b3bc 
 # Thanks Basilio Vera, Rubén Norte, and Jose Manuel Cardona! 
 
@@ -44,7 +44,7 @@ env_secrets_expand() {
     fi
 }
 env_secrets_expand
-
+dogfish migrate &
 # Add any additional script here. 
 
 exec "$@"

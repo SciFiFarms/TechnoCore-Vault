@@ -1,0 +1,37 @@
+version: "3.5"
+
+volumes:
+  vault:
+
+services:
+
+  vault_init:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == manager
+      # Big services will need this modified or removed.
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+    environment:
+      - SKIP_SETCAP=true
+      - VAULT_ADDR=https://vault.local:8200
+    image: ${image_provider:-scififarms}/technocore:${TAG:-latest}
+    logging:
+      driver: "${LOGGING_DRIVER}"
+      options:
+        tag: "{{.Name}}"
+      - source: vault_unseal
+        target: unseal
+      - source: vault_token
+        target: token
+    volumes:
+      - vault:/vault/file
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DEV_MOUNT_VAULT_MIGRATIONS:-$EMPTY_MOUNT}

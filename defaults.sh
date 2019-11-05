@@ -20,7 +20,7 @@ set_service_flag $service_name
 # for a complete example.
 ## If the include exporters flag is set
 #if [ ! -z "$SERVICE_prometheus_exporters" ]; then
-#    export SERVICE_CONFIG_prometheus_exporters=${TECHNOCORE_SERVICES}/prometheus/exporters.yml
+export SERVICE_CONFIG_VAULT_INIT=${TECHNOCORE_SERVICES}/vault/init.yml
 #fi
 
-#generate_mount dev shell-migrations /usr/share/dogfish/shell-migrations
+generate_mount dev migrations /usr/share/dogfish/shell-migrations
