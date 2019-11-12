@@ -3,7 +3,7 @@ FROM alpine:3.10
 COPY --from=base / /
 RUN apk add --no-cache bash
 
-#COPY docker-entrypoint.sh usr/local/bin/docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY data/config.hcl /vault/config/config.hcl
 COPY data/setup.json /vault/setup/setup.json
 COPY policies/ /policies/
@@ -25,4 +25,4 @@ COPY exitpoint.sh /usr/bin/exitpoint.sh
 WORKDIR /vault/file
 
 ENTRYPOINT ["go-init"]
-CMD ["-main", "/usr/bin/entrypoint.sh docker-entrypoint.sh server", "-post", "/usr/bin/exitpoint.sh"]
+CMD ["-main", "/usr/bin/entrypoint.sh /docker-entrypoint.sh server", "-post", "/usr/bin/exitpoint.sh"]

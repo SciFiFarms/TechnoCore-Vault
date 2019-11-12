@@ -1,0 +1,21 @@
+version: "3.5"
+secrets:
+  vault_mqtt_password:
+    name: ${STACK_NAME:-technocore}_vault_mqtt_password
+    external: true
+  mqtt_vault_password:
+    name: ${STACK_NAME:-technocore}_mqtt_vault_password
+    external: true
+
+services:
+  vault:
+    secrets:
+      - source: vault_mqtt_password
+        target: mqtt_password
+
+  mqtt:
+    networks:
+      - vault
+    secrets:
+      - source: mqtt_vault_password
+        target: users/vault

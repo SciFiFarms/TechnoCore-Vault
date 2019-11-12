@@ -21,6 +21,6 @@ set_service_flag $service_name
 ## If the include exporters flag is set
 #if [ ! -z "$SERVICE_prometheus_exporters" ]; then
 export SERVICE_CONFIG_VAULT_INIT=${TECHNOCORE_SERVICES}/vault/init.yml
-#fi
+set_optional_service vernemq
 
 generate_mount dev migrations /usr/share/dogfish/shell-migrations
