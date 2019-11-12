@@ -24,5 +24,6 @@ COPY entrypoint.sh /usr/bin/entrypoint.sh
 COPY exitpoint.sh /usr/bin/exitpoint.sh
 WORKDIR /vault/file
 
+COPY unseal-vault.sh /usr/bin/unseal-vault.sh
 ENTRYPOINT ["go-init"]
 CMD ["-main", "/usr/bin/entrypoint.sh /docker-entrypoint.sh server", "-post", "/usr/bin/exitpoint.sh"]
