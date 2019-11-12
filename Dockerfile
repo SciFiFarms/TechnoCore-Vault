@@ -1,7 +1,7 @@
 FROM vault:1.1.1 as base
 FROM alpine:3.10
 COPY --from=base / /
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash mosquitto-clients
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY data/config.hcl /vault/config/config.hcl
