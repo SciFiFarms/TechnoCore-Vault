@@ -6,7 +6,7 @@ RUN apk add --no-cache bash
 #COPY docker-entrypoint.sh usr/local/bin/docker-entrypoint.sh
 COPY data/config.hcl /vault/config/config.hcl
 COPY data/setup.json /vault/setup/setup.json
-COPY * ./
+COPY policies/ /policies/
 
 # This should be set to where the volume mounts to.
 ARG PERSISTANT_DIR=/vault/file
