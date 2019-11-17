@@ -1,0 +1,77 @@
+version: "3.5"
+
+networks:
+  vault:
+
+volumes:
+  vault:
+
+secrets:
+  vault_admin_password:
+    name: ${STACK_NAME:-technocore}_vault_admin_password
+    external: true
+
+  vault_unseal:
+    name: ${STACK_NAME:-technocore}_vault_unseal
+    external: true
+  vault_token:
+    name: ${STACK_NAME:-technocore}_vault_token
+    external: true
+
+services:
+  ingress:
+    networks:
+      - vault
+
+  vault:
+    deploy:
+      labels:
+        - traefik.frontend.rule=$VAULT_ROUTING_LABEL
+        - traefik.frontend.priority=$VAULT_ROUTING_LABEL_PRIORITY
+        - traefik.port=8200
+        - ${TRAEFIK_BASIC_AUTH}
+        - traefik.enable=true
+        # You'll need to set applicaiton's port here.
+        - traefik.tags=ingress 
+        - traefik.docker.network=${STACK_NAME:-technocore}_vault
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+        - com.ouroboros.enable=true
+      mode: global
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == manager
+      # Big services will need this modified or removed.
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+    environment:
+      - SKIP_SETCAP=true
+      - VAULT_ADDR=http://vault:8200
+      - MQTT_USER=vault
+      # Sometimes you have to pass in ${DOMAIN} to enable the correct link paths to be generated.
+      # Othertimes you can use http:// or https:// for the website. Weird trick.
+    image: ${image_provider:-scififarms}/technocore-vault:${TAG:-latest}
+    logging:
+      driver: "${LOGGING_DRIVER}"
+      options:
+        tag: "{{.Name}}"
+    networks:
+      - vault
+    secrets:
+      - source: vault_admin_password
+        target: admin_password
+      - source: vault_unseal
+        target: unseal
+      - source: vault_token
+        target: token
+    volumes:
+      - vault:/vault/file
+      - ${DEV_MOUNT_VAULT_MIGRATIONS:-$EMPTY_MOUNT}

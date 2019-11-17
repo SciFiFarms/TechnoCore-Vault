@@ -1,0 +1,38 @@
+version: "3.5"
+
+volumes:
+  vault:
+
+services:
+
+  vault_init:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == manager
+      # Big services will need this modified or removed.
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+    environment:
+      - SKIP_SETCAP=true
+      - VAULT_ADDR=http://vault:8200
+      - STACK_NAME=${STACK_NAME}
+      - image_provider=${image_provider}
+      - TAG=${TAG}
+    command: vault-init
+
+    image: ${image_provider:-scififarms}/technocore:${TAG:-latest}
+    logging:
+      driver: "${LOGGING_DRIVER}"
+      options:
+        tag: "{{.Name}}"
+    volumes:
+      - vault:/vault/file
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DEV_MOUNT_VAULT_MIGRATIONS:-$EMPTY_MOUNT}
