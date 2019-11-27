@@ -6,7 +6,7 @@ until vault login "$(cat /run/secrets/token)"; do
 done
 
 # TODO: This should be a generic command: wait_for_mqtt
-until mosquitto_pub -i ${MQTT_USER}_test_connection -h mqtt -p 1883 -q 0 \
+until mosquitto_pub -i ${MQTT_USER}_test_connection -h mqtt -p 1883 -q 1 \
     -t test/network/up \
     -m "A message" \
     -u $MQTT_USER \
