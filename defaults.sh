@@ -16,7 +16,7 @@ set_service_flag $service_name
 # https://prefix.some.domain/
 # prefix=$service_name
 
-if ! docker volume ls | grep -w "${STACK_NAME}_vault" 1>&2 ; then
+if [ "$SERVICE_VAULT" ] && ! docker volume ls | grep -w "${STACK_NAME}_vault" 1>&2 ; then
     export SERVICE_CONFIG_VAULT_INIT=${TECHNOCORE_SERVICES}/vault/init.yml
 fi
 
