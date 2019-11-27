@@ -43,7 +43,14 @@ env_secrets_expand() {
         printenv
     fi
 }
+
+if cat /run/secrets/token | grep "Not yet set."; then
+    echo "Vault not initialized. Sleeping."
+    sleep 500
+fi
+
 env_secrets_expand
+unseal-vault.sh &
 dogfish migrate &
 # Add any additional script here. 
 

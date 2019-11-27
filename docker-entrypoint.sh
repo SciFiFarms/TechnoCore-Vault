@@ -96,5 +96,4 @@ if [ "$1" = 'vault' ]; then
     fi
 fi
 
-unseal-vault.sh &
 exec "$@"

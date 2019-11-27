@@ -16,6 +16,7 @@ do
     echo "Couldn't reach MQTT. Will retry in 5 seconds."
     sleep 5
 done
+sleep 2
 
 for service in $(env | grep CREATE_SERVICE_.*=); do
     echo "Creating policy for service: $service"

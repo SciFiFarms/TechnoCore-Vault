@@ -36,3 +36,5 @@ services:
       - vault:/vault/file
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DEV_MOUNT_VAULT_MIGRATIONS:-$EMPTY_MOUNT}
+    networks:
+      - vault
