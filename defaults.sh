@@ -22,4 +22,6 @@ fi
 
 set_optional_service vernemq
 
+# TODO: I don't actually expect this to work. Need to implement the "file" mount type.
+generate_mount file data/config.hcl /vault/config/config.hcl
 generate_mount dev migrations /usr/share/dogfish/shell-migrations
