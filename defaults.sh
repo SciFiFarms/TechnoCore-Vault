@@ -16,12 +16,12 @@ set_service_flag $service_name
 # https://prefix.some.domain/
 # prefix=$service_name
 
-if [ "$SERVICE_VAULT" ] && ! docker volume ls | grep -w "${STACK_NAME}_vault" 1>&2 ; then
+if [ "$SERVICE_VAULT" ] && ! docker volume ls | grep -w "${STACK_NAME}_vault" > /dev/null ; then
     export SERVICE_CONFIG_VAULT_INIT=${TECHNOCORE_SERVICES}/vault/init.yml
 fi
 
 set_optional_service vernemq
 
 # TODO: I don't actually expect this to work. Need to implement the "file" mount type.
-generate_mount file data/config.hcl /vault/config/config.hcl
+#generate_mount file data/config.hcl /vault/config/config.hcl
 generate_mount dev migrations /usr/share/dogfish/shell-migrations
